@@ -1,35 +1,10 @@
 version: '2'
 
-# Prerequisite: named volumes "nvpostgisdata" and "nvtiles" must be created.
-# To list all the docker volumes:
-# docker volume ls
-#
-# To create the named volumes:
-# docker volume create --name nvpostgisdata -d local
-# docker volume create --name nvtiles -d local
-#
-# To prepare db:
-# docker-compose run --rm app-osm initdb
-#
-# To import "bretagne-latest.osm.pbf" into db:
-# docker-compose run --rm app-osm import
-#
-# To start all services (start populated postgis database, start renderd, start apache):
-# docker-compose up -d
-#
-# To remove named volume (only if necessary):
-# docker volume rm nvpostgisdata
-# docker volume rm nvtiles
 services:
   app-osm:
     build: .
     image: zavpyj/osm-tiles
     volumes:
-      # keep postgresql database files on host in named volume "nvpostgisdata":
-      - nvpostgisdata:/var/lib/postgresql
-      # keep OSM tiles on host in named volume "nvtiles":
-      - nvtiles:/var/lib/mod_tile
-      # mount OSM data file from host into Docker container
       - ./bretagne-latest.osm.pbf:/tmp/import.osm.pbf
     environment:
       OSM_IMPORT_FILE: '/tmp/import.osm.pbf'
@@ -49,9 +24,4 @@ services:
       #OSM_WEB_AUTHORIZED_REFERERS: 'www.example.com|www.example2.com'
     ports:
       - '80:80'
-    command: 'startservices'
-volumes:
-  nvpostgisdata:
-    external: true
-  nvtiles:
-    external: true
+    command: 'start'

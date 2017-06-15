@@ -6,6 +6,7 @@ Positional arguments:
   COMMAND          The command to run. (default: help)
 
 Commands:
+  start            Initialise if not already done (initdb+import+render) and Start OSM server (startservices)
   help             Show this help message
   initdb           Initialise the postgres database, create osm database and database user
   startdb          Start the postgresql database

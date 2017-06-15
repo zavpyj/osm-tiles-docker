@@ -38,23 +38,27 @@ Command reference is available in `help.txt` or by running the image:
 $ docker run --rm zavpyj/osm-tiles
 ```
 
-To persist the postgresql database, it is advised to create beforehand a docker's named volume (mandatory to persist on Windows OS):
+### Atomic Usage
+
+To persist the postgresql database and the generated tiles, it is advised to create beforehand a docker's named volume (mandatory to persist on Windows OS):
 
 ```sh
 $ docker volume create --name nvpostgisdata -d local
-```
-
-Idem to persist the generated tiles:
-
-```sh
 $ docker volume create --name nvtiles -d local
 ```
 
 Using [`Docker Compose`](https://docs.docker.com/compose/) and a dedicated [`docker-compose.yml`](https://docs.docker.com/compose/compose-file/) configuration file, zavpyj/osm-tiles is even simpler to use:
 ```sh
-$ docker-compose run --rm perturbations-osm initdb
-$ docker-compose run --rm perturbations-osm import
-$ docker-compose run --rm perturbations-osm render
+$ docker-compose run --rm app-osm initdb
+$ docker-compose run --rm app-osm import
+$ docker-compose run --rm app-osm render
 $ docker-compose up -d
 ```
 
+### Direct Usage
+
+Initialise if not already done (initdb+import+render) and Start OSM server (startservices)
+
+```sh
+$ docker-compose -f osm.yml up -d
+```

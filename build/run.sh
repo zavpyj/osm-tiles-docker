@@ -175,6 +175,42 @@ help () {
     exit
 }
 
+start () {
+    if [ -f /tmp/InitDone.txt ]; then
+        echo "[`date '+%H:%M:%S'`] Initialization already done"
+    else
+        echo ""
+        echo "-----------------------------------------------------------------"
+        echo "[`date '+%H:%M:%S'`] initdb"
+        initdb
+        echo ""
+        echo "-----------------------------------------------------------------"
+        echo "[`date '+%H:%M:%S'`] import"
+        import
+        echo ""
+        echo "-----------------------------------------------------------------"
+        echo "[`date '+%H:%M:%S'`] render"
+        render
+    fi
+    touch /tmp/InitDone.txt
+
+    echo ""
+    echo "====================================================================="
+    echo "[`date '+%H:%M:%S'`] startservices"
+    echo ""
+    echo "---------------------------------------------------------------------"
+    echo "[`date '+%H:%M:%S'`] startdb"
+    startdb
+    echo ""
+    echo "---------------------------------------------------------------------"
+    echo "[`date '+%H:%M:%S'`] _startservice renderd"
+    _startservice renderd
+    echo ""
+    echo "---------------------------------------------------------------------"
+    echo "[`date '+%H:%M:%S'`] startweb"
+    startweb
+}
+
 # wait until 2 seconds after boot when runit will have started supervising the services.
 
 sleep 2
